@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>oopFirstSlider</title>
+</head>
+<body>
+<style>
+	*{
+		margin: 0;
+	}
+	.slider{
+		width: 600px;
+		height: 400px;
+		overflow: hidden;
+		padding-left: 300px;
+		padding-top: 50px;
+	}
+	ul{
+		list-style: none;
+		padding: 0;
+		position: relative;
+	}
+	li {
+		width: 600px;
+		height: 400px;
+		float: left;
+	}
+	span{
+		display: inline-block;
+		color: black;
+		background-color: grey;
+		padding: 5px 15px;
+		border-radius: 3px;
+		margin-top: 10px;
+	}
+	.controls{
+		padding-left: 520px;
+		padding-top: 10px;
+	}
+</style>
+<body>
+	<div class='slider'>
+		<ul>
+			<li><img src='1.jpg' alt='1'></li>
+			<li><img src='2.jpg' alt='2'></li>
+			<li><img src='3.jpg' alt='3'></li>
+			<li><img src='4.jpg' alt='4'></li>
+		</ul>
+	</div>
+	<div class='controls'>
+		<span data-derection='prev'>Prev</span>
+		<span data-derection='next'>Next</span>
+	</div>
+	<script>
+			function Slider(){
+				this.ul = document.querySelector('ul');
+				this.controls = document.querySelector('.controls');
+				this.slide = this.ul.children;
+				this.widthSlide = this.ul.firstElementChild.clientWidth;
+				this.count = this.widthSlide*(this.ul.children.length + 1);
+				this.ul.style.cssText ='width:'+this.count+'px;';
+				this.controls.addEventListener ('click', this.slideNext.bind(this));
+			}
+
+			Slider.prototype.slideNext  = function(e){
+				var target = e && e.target || window.event.srcElement;
+				var attr = target.getAttribute("data-derection");
+				if (!attr) return;
+
+				if(attr == 'prev'){
+					var slideLast = this.ul.lastElementChild;
+					var clon =  slideLast.cloneNode(true);
+					this.ul.insertBefore(clon, this.ul.firstElementChild);
+					this.ul.style.left = "-"+this.widthSlide+"px";
+					this.ul.removeChild(slideLast);
+					this.ul.style.left = "0px";
+				}
+
+				if(attr == 'next'){
+					var slideFirst = this.ul.firstElementChild;
+					var clon =  slideFirst.cloneNode(true);
+					this.ul.appendChild(clon);
+					this.ul.style.left = "-"+this.widthSlide+"px";
+					this.ul.removeChild(slideFirst);
+					this.ul.style.left = "0px";
+				}
+			}
+			
+			new Slider();
+
+	</script>
+	
+</body>
+</html>
